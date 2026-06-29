@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yihan Makeup — Bridal & Event Makeup</title>
+  <meta name="description" content="Orlando 新娘化妆 | 试妆、婚礼当天妆发、活动妆发预约。自然、耐看、上镜。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#faf6f3;
+      --ink:#2b2b2b;
+      --muted:#6b6b6b;
+      --brand:#c8a898;
+      --brand-deep:#a68573;
+      --card:#ffffff;
+      --radius:18px;
+      --shadow:0 6px 30px rgba(0,0,0,.08);
+      --nav-h:58px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:Inter,system-ui,ui-sans-serif,-apple-system,BlinkMacSystemFont;
+      color:var(--ink);
+      background:var(--bg);
+      padding-top:var(--nav-h); /* 避免被固定导航遮挡 */
+    }
+    h1,h2,h3{font-family:"Playfair Display",serif; letter-spacing:.2px; margin:0 0 .6rem}
+    p{margin:.5rem 0 1rem; line-height:1.75; color:var(--muted)}
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block; height:auto}
+    section{padding:72px 20px}
+    .container{max-width:1100px; margin:0 auto}
+
+    /* 顶部导航 */
+    .nav{
+      position:fixed; inset-inline:0; top:0; z-index:30;
+      background:rgba(250,246,243,.85);
+      backdrop-filter:saturate(180%) blur(12px);
+      border-bottom:1px solid rgba(0,0,0,.06)
+    }
+    .nav-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 20px; max-width:1100px; margin:0 auto}
+    .brand{font-family:"Playfair Display",serif; font-weight:700; font-size:22px}
+    .menu{display:flex; gap:22px}
+    .menu a{font-size:14px; letter-spacing:.06em}
+    /* 移动菜单 */
+    #nav-toggle{display:none}
+    .hamburger{display:none; width:36px; height:36px; place-items:center; border-radius:10px; border:1px solid rgba(0,0,0,.08); cursor:pointer}
+
+    @media (max-width: 780px){
+      .menu{display:none}
+      .hamburger{display:grid}
+      /* 复选框勾选时展开菜单（与 DOM 结构匹配） */
+      #nav-toggle:checked ~ .menu{
+        position:absolute; left:12px; right:12px; top:58px;
+        display:flex; flex-direction:column; gap:6px;
+        background:var(--card); border:1px solid rgba(0,0,0,.06);
+        padding:12px; border-radius:14px; box-shadow:var(--shadow)
+      }
+      #nav-toggle:checked ~ .menu a{padding:10px; border-radius:10px}
+      #nav-toggle:checked ~ .menu a:hover{background:#f2ebe7}
+    }
+
+    /* 首屏 */
+    .hero{min-height:calc(100vh - var(--nav-h)); display:grid; align-items:center; padding-block:60px}
+    .hero-wrap{display:grid; grid-template-columns:1.1fr 1fr; gap:40px; align-items:center}
+    .hero h1{font-size:48px; line-height:1.15}
+    .hero p{font-size:16px}
+    .cta{
+      display:inline-flex; align-items:center; gap:10px;
+      background:var(--brand-deep); color:#fff; padding:14px 20px;
+      border-radius:999px; box-shadow:var(--shadow); font-weight:600
+    }
+    .cta:hover{filter:brightness(1.05)}
+    .hero-card{border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); background:var(--card)}
+    .hero-card img{aspect-ratio:4/5; object-fit:cover}
+    .badge{display:inline-block; font-size:12px; padding:6px 10px; border-radius:999px; background:#efe6e1; color:#7d6557; margin-bottom:10px}
+
+    @media (max-width:980px){
+      .hero-wrap{grid-template-columns:1fr}
+      .hero h1{font-size:36px}
+    }
+    @media (max-width:480px){
+      .hero{padding-block:44px}
+      .hero h1{font-size:30px}
+      .cta{padding:12px 16px}
+    }
+
+    /* 服务 */
+    .section-title{font-size:30px; text-align:center}
+    .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:26px}
+    .card{background:var(--card); padding:20px; border-radius:var(--radius); box-shadow:var(--shadow)}
+    .card h3{font-size:20px}
+    .price{font-weight:700; color:#58483f}
+    @media (max-width:900px){.cards{grid-template-columns:1fr}}
+    @media (min-width:901px) and (max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}}
+
+    /* About */
+    .about{display:grid; grid-template-columns:300px 1fr; gap:28px; align-items:start}
+    .avatar{width:300px; aspect-ratio:1/1; border-radius:50%; object-fit:cover; box-shadow:var(--shadow)}
+    @media (max-width:900px){
+      .about{grid-template-columns:1fr; text-align:center}
+      .avatar{margin:0 auto}
+    }
+
+    /* 高光 */
+    .list{padding-left:1.2rem}
+    .list li{margin:.4rem 0; color:var(--muted)}
+
+    .highlights-images{
+      display:flex; flex-wrap:wrap; gap:10px; margin-top:20px
+    }
+    .highlights-images img{
+      flex:1 1 calc(20% - 10px); border-radius:12px
+    }
+    @media (max-width:900px){
+      .highlights-images img{flex-basis:calc(33.333% - 10px)}
+    }
+    @media (max-width:600px){
+      .highlights-images img{flex-basis:calc(50% - 10px)}
+    }
+
+    /* 视频响应式：保持 16:9 比例，宽度自适应 */
+    .video-wrap{position:relative; width:100%; max-width:760px; margin:20px auto 0}
+    .video-wrap::before{content:""; display:block; padding-top:56.25%}
+    .video-wrap > video, .video-wrap > iframe{
+      position:absolute; inset:0; width:100%; height:100%; border:0; border-radius:16px; box-shadow:var(--shadow); background:#000
+    }
+
+    /* 预约表单 */
+    .form{background:var(--card); padding:24px; border-radius:var(--radius); box-shadow:var(--shadow); max-width:720px; margin:20px auto 0}
+    .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    .form label{font-size:12px; color:#5f5f5f}
+    .form input,.form select,.form textarea{width:100%; padding:12px; border:1px solid #e8e1dc; border-radius:12px; background:#fff}
+    .form textarea{min-height:100px}
+    .form .full{grid-column:1/-1}
+    .btn{background:var(--brand-deep); color:#fff; border:none; padding:14px 18px; border-radius:12px; font-weight:600; cursor:pointer}
+    @media (max-width:700px){
+      .form-grid{grid-template-columns:1fr}
+    }
+
+    footer{padding:50px 20px; text-align:center; color:var(--muted)}
+  </style>
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <nav class="nav" aria-label="Primary">
+    <div class="nav-inner">
+      <div class="brand">Yihan Makeup</div>
+      <label class="hamburger" for="nav-toggle" aria-label="Open menu">☰</label>
+      <input id="nav-toggle" type="checkbox" hidden>
+      <div class="menu" role="menubar">
+        <a href="#home" role="menuitem">Home</a>
+        <a href="#services" role="menuitem">Services</a>
+        <a href="#about" role="menuitem">About</a>
+        <a href="#highlights" role="menuitem">Highlights</a>
+        <a href="#booking" role="menuitem">Booking</a>
+        <a href="#lets-get-social" role="menuitem">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 首屏 Hero -->
+  <header id="home" class="hero">
+    <div class="container hero-wrap">
+      <div>
+        <span class="badge">Orlando | Bridal Makeup</span>
+        <h1>简约优雅 · 新娘妆发<br/>让你的特别一天更上镜</h1>
+        <p>5+ 年婚礼与活动化妆经验，主打自然耐看、贴合肤质和五官比例的妆容。提供试妆、婚礼当天跟妆与伴娘团队服务。</p>
+        <a class="cta" href="#booking" aria-label="预约妆发">立即预约</a>
+      </div>
+      <figure class="hero-card" aria-label="新娘风格示意图">
+        <img src="1.png" alt="柔和光线下的新娘妆容与头纱" />
+      </figure>
+    </div>
+  </header>
+
+  <!-- 服务 -->
+  <section id="services">
+    <div class="container">
+      <h2 class="section-title">Services We Offer</h2>
+      <p style="text-align:center">The following are all based on <strong>ONE</strong> full-face makeup application.</p>
+      <div class="cards">
+        <div class="card">
+          <h3>新娘试妆</h3>
+          <p>妆容打板与沟通风格，含自然假睫毛与简单发型建议</p>
+          <p class="price">Bridal Trial Makeup $699 · 60–90 min<br>Bridal Trial Hair $199 · 60 min</p>
+        </div>
+        <div class="card">
+          <h3>新娘妆造</h3>
+          <p>精致底妆与定妆，含自然假睫毛与一件新娘发饰</p>
+          <p class="price">Bridal Makeup $699 · 60–90 min<br>Bridal Hair $199 · 60 min</p>
+        </div>
+        <div class="card">
+          <h3>活动妆造</h3>
+          <p>拍摄、生日、晚宴、舞会</p>
+          <p class="price"><u>Facial</u> Makeup + Hair $599 · 120 min</p>
+        </div>
+      </div>
+      <p style="text-align:center; margin-top:10px">Inspiration pictures are more than welcome · 20% booking fee to hold your date and services</p>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="container about">
+      <img class="avatar" src="图片.png" alt="Yihan 头像" />
+      <div>
+        <h2>About Me</h2>
+        <p>
+          Hi, I’m Yihan — a bridal makeup artist based in Orlando, Florida. With over 5 years of experience, I specialize in creating timeless, elegant looks that highlight each bride’s natural beauty. My focus is always on flawless, long-lasting makeup that looks stunning both in person and on camera. I take pride in offering a calm, organized, and professional experience from trial to wedding day. Whether you’re going for soft and romantic or classic and polished, I’ll work closely with you to bring your vision to life. Let’s make your special day even more beautiful!
+        </p>
+        <p>我是 Yihan，常驻奥兰多的婚礼化妆师。专注于打造「耐看、上镜」的新娘妆与自然发型，讲究底妆贴合与五官比例微调，保证近看质感、远看立体。无论您喜欢温柔浪漫还是经典优雅，我都会用专业与细心将您心中梦幻的新娘造型化为现实。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 高光经历 -->
+  <section id="highlights">
+    <div class="container">
+      <h2 class="section-title">Professional Highlights</h2>
+      <ul class="list">
+        <li>Makeup Artist, Cat Fanciers’ Association Annual Show — 2025</li>
+        <li>Lead Makeup Artist, “International Cheer Union” at ESPN Wide World of Sports Complex — 2024</li>
+        <li>Makeup Designer，Chinese New Year Production — 2023–2025</li>
+        <li>Makeup Director, Greater Orlando Mid-Autumn Festival — 2024</li>
+        <li>Provided bespoke makeup looks for 50+ private clients annually across Greater Orlando, specializing in bridal parties and celebratory events</li>
+        <li>Garnered over 80,000 social media reviews and mentions under #OrlandoYHMakeup</li>
+      </ul>
+
+      <div class="highlights-images">
+        <img src="p1.JPG" alt="Highlight 1">
+        <img src="p2.JPG" alt="Highlight 2">
+        <img src="p3.JPG" alt="Highlight 3">
+        <img src="p4.JPG" alt="Highlight 4">
+        <img src="p5.JPG" alt="Highlight 5">
+      </div>
+
+      <div class="video-wrap">
+        <video controls>
+          <source src="视频.MP4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <!-- 预约表单 -->
+  <section id="booking">
+    <div class="container">
+      <h2 class="section-title">Booking</h2>
+
+      <!-- Success / Error banners (hidden by default) -->
+      <div id="booking-success" style="display:none; max-width:720px; margin:0 auto 16px; background:#d4edda; color:#155724; padding:14px 20px; border-radius:12px; font-size:14px;">
+        ✨ Your booking request has been received! Check your email for confirmation — I'll follow up within 24 hours.
+      </div>
+      <div id="booking-error" style="display:none; max-width:720px; margin:0 auto 16px; background:#f8d7da; color:#721c24; padding:14px 20px; border-radius:12px; font-size:14px;">
+        Something went wrong. Please try again or email me directly at yihans.art@gmail.com.
+      </div>
+
+      <form id="booking-form" class="form" aria-label="预约表单" novalidate>
+        <div class="form-grid">
+          <div>
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" placeholder="Your name" required />
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="name@email.com" required />
+          </div>
+          <div>
+            <label for="date">Date</label>
+            <input id="date" name="date" type="date" required />
+          </div>
+          <div>
+            <label for="service">Service</label>
+            <select id="service" name="service" required>
+              <option value="bridal-makeup">Bridal Makeup</option>
+              <option value="bridal-trial">Bridal Trial Run</option>
+              <option value="event">Special Event Makeup</option>
+            </select>
+          </div>
+          <div class="full">
+            <label for="message">Share all the details here :)</label>
+            <textarea id="message" name="message" placeholder="Tell me more..."></textarea>
+          </div>
+        </div>
+        <div style="margin-top:14px; display:flex; gap:10px; align-items:center; justify-content:flex-end">
+          <button class="btn" type="submit" id="submit-btn">SEND W/ LOVE</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    // ── Set minimum date to today ──────────────────────────────────────────────
+    const dateInput = document.getElementById('date');
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('min', today);
+
+    // ── Booking form → REST API ────────────────────────────────────────────────
+    document.getElementById('booking-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const form      = e.target;
+      const btn       = document.getElementById('submit-btn');
+      const successEl = document.getElementById('booking-success');
+      const errorEl   = document.getElementById('booking-error');
+
+      // Hide previous banners
+      successEl.style.display = 'none';
+      errorEl.style.display   = 'none';
+
+      // Disable button while submitting
+      btn.disabled    = true;
+      btn.textContent = 'Sending…';
+
+      const payload = {
+        name:    form.name.value.trim(),
+        email:   form.email.value.trim(),
+        date:    form.date.value,
+        service: form.service.value,
+        message: form.message.value.trim(),
+      };
+
+      try {
+        const res  = await fetch('/api/appointments', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(payload),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          successEl.style.display = 'block';
+          form.reset();
+          successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          const msg = data.errors ? data.errors.map(e => e.msg).join(' · ') : data.message;
+          errorEl.textContent = msg || 'Something went wrong.';
+          errorEl.style.display = 'block';
+        }
+      } catch (err) {
+        console.error(err);
+        errorEl.style.display = 'block';
+      } finally {
+        btn.disabled    = false;
+        btn.textContent = 'SEND W/ LOVE';
+      }
+    });
+  </script>
+
+  <!-- 联系方式 -->
+  <section id="lets-get-social">
+    <div class="container" style="text-align:center">
+      <h2 class="section-title">Contact</h2>
+      <p>
+        Email: <a href="mailto:yihans.art@gmail.com">yihans.art@gmail.com</a> ·
+        xiaohongshu:
+        <a href="https://www.xiaohongshu.com/user/profile/608c0a390000000001009ef2?tab=liked&subTab=note" target="_blank" rel="noopener">点击这里访问</a>
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">© <span id="y"></span> Yihan Makeup · Orlando, FL <b>Made with LOVE</b></div>
+  </footer>
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
