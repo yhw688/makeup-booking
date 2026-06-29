@@ -1,5 +1,23 @@
 // utils/mailer.js
 // Sends booking confirmation emails via SendGrid.
+//They don't make any decisions — they just wait to be told "send this email" and they do it.
+
+/*
+Customer fills form (index.html)
+        ↓
+fetch() inside index.html sends data to backend
+        ↓
+server.js receives it, routes to appointments.js
+        ↓
+appointments.js validates the data      get the request from frontendnpm 
+        ↓
+database.js saves it to bookings.json
+        ↓
+mailer.js sends 2 emails via SendGrid
+        ↓
+appointments.js sends success response    return the results to the frontned
+        ↓
+index.html shows green banner to customer */
 
 const sgMail = require('@sendgrid/mail');
 

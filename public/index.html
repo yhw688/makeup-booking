@@ -1,3 +1,22 @@
+
+<!--Customer fills form
+      ↓
+Clicks SEND W/ LOVE
+      ↓
+e.preventDefault() stops page reload
+      ↓
+fetch() sends data to /api/appointments
+      ↓
+Waits for backend response
+      ↓
+Success → green banner + form clears
+Failure → red banner + button re-enables-->
+
+
+<!--The frontend form collects the customer's booking details and 
+uses fetch() to send them to the backend REST API — no page reload, instant feedback to the user.-->
+
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -303,7 +322,7 @@
 
     // ── Booking form → REST API ────────────────────────────────────────────────
     document.getElementById('booking-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
+      e.preventDefault(); //stop page reload
 
       const form      = e.target;
       const btn       = document.getElementById('submit-btn');
@@ -326,7 +345,7 @@
         message: form.message.value.trim(),
       };
 
-      try {
+      try { //fetch() sends data to /api/appointments
         const res  = await fetch('/api/appointments', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
