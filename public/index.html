@@ -18,12 +18,12 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
 
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Yihan Makeup — Bridal & Event Makeup</title>
-  <meta name="description" content="Orlando 新娘化妆 | 试妆、婚礼当天妆发、活动妆发预约。自然、耐看、上镜。" />
+  <meta name="description" content="Orlando bridal and event makeup, including bridal trials, wedding day looks, and special occasions." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
@@ -46,7 +46,7 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
       font-family:Inter,system-ui,ui-sans-serif,-apple-system,BlinkMacSystemFont;
       color:var(--ink);
       background:var(--bg);
-      padding-top:var(--nav-h); /* 避免被固定导航遮挡 */
+      padding-top:var(--nav-h); 
     }
     h1,h2,h3{font-family:"Playfair Display",serif; letter-spacing:.2px; margin:0 0 .6rem}
     p{margin:.5rem 0 1rem; line-height:1.75; color:var(--muted)}
@@ -55,7 +55,7 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
     section{padding:72px 20px}
     .container{max-width:1100px; margin:0 auto}
 
-    /* 顶部导航 */
+    
     .nav{
       position:fixed; inset-inline:0; top:0; z-index:30;
       background:rgba(250,246,243,.85);
@@ -66,14 +66,14 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
     .brand{font-family:"Playfair Display",serif; font-weight:700; font-size:22px}
     .menu{display:flex; gap:22px}
     .menu a{font-size:14px; letter-spacing:.06em}
-    /* 移动菜单 */
+    
     #nav-toggle{display:none}
     .hamburger{display:none; width:36px; height:36px; place-items:center; border-radius:10px; border:1px solid rgba(0,0,0,.08); cursor:pointer}
 
     @media (max-width: 780px){
       .menu{display:none}
       .hamburger{display:grid}
-      /* 复选框勾选时展开菜单（与 DOM 结构匹配） */
+      
       #nav-toggle:checked ~ .menu{
         position:absolute; left:12px; right:12px; top:58px;
         display:flex; flex-direction:column; gap:6px;
@@ -84,7 +84,7 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
       #nav-toggle:checked ~ .menu a:hover{background:#f2ebe7}
     }
 
-    /* 首屏 */
+    
     .hero{min-height:calc(100vh - var(--nav-h)); display:grid; align-items:center; padding-block:60px}
     .hero-wrap{display:grid; grid-template-columns:1.1fr 1fr; gap:40px; align-items:center}
     .hero h1{font-size:48px; line-height:1.15}
@@ -109,12 +109,12 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
       .cta{padding:12px 16px}
     }
 
-    /* 服务 */
+    
     .section-title{font-size:30px; text-align:center}
     .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:26px}
     .card{background:var(--card); padding:20px; border-radius:var(--radius); box-shadow:var(--shadow)}
     .card h3{font-size:20px}
-    .price{font-weight:700; color:#58483f}
+
     @media (max-width:900px){.cards{grid-template-columns:1fr}}
     @media (min-width:901px) and (max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}}
 
@@ -126,7 +126,7 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
       .avatar{margin:0 auto}
     }
 
-    /* 高光 */
+    
     .list{padding-left:1.2rem}
     .list li{margin:.4rem 0; color:var(--muted)}
 
@@ -143,14 +143,14 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
       .highlights-images img{flex-basis:calc(50% - 10px)}
     }
 
-    /* 视频响应式：保持 16:9 比例，宽度自适应 */
+    
     .video-wrap{position:relative; width:100%; max-width:760px; margin:20px auto 0}
     .video-wrap::before{content:""; display:block; padding-top:56.25%}
     .video-wrap > video, .video-wrap > iframe{
       position:absolute; inset:0; width:100%; height:100%; border:0; border-radius:16px; box-shadow:var(--shadow); background:#000
     }
 
-    /* 预约表单 */
+    /* Booking form */
     .form{background:var(--card); padding:24px; border-radius:var(--radius); box-shadow:var(--shadow); max-width:720px; margin:20px auto 0}
     .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
     .form label{font-size:12px; color:#5f5f5f}
@@ -166,7 +166,7 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
   </style>
 </head>
 <body>
-  <!-- 顶部导航 -->
+  
   <nav class="nav" aria-label="Primary">
     <div class="nav-inner">
       <div class="brand">Yihan Makeup</div>
@@ -183,69 +183,69 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
     </div>
   </nav>
 
-  <!-- 首屏 Hero -->
+  
   <header id="home" class="hero">
     <div class="container hero-wrap">
       <div>
         <span class="badge">Orlando | Bridal Makeup</span>
-        <h1>简约优雅 · 新娘妆发<br/>让你的特别一天更上镜</h1>
-        <p>5+ 年婚礼与活动化妆经验，主打自然耐看、贴合肤质和五官比例的妆容。提供试妆、婚礼当天跟妆与伴娘团队服务。</p>
-        <a class="cta" href="#booking" aria-label="预约妆发">立即预约</a>
+        <h1>Timeless Beauty for<br/>Your Special Day</h1>
+        <p>With over five years of experience, I create natural, elegant bridal and event makeup tailored to your features. Bridal trials and wedding day services are available.</p>
+        <a class="cta" href="#booking" aria-label="Book an appointment">Book Now</a>
       </div>
-      <figure class="hero-card" aria-label="新娘风格示意图">
-        <img src="1.png" alt="柔和光线下的新娘妆容与头纱" />
+      <figure class="hero-card" aria-label="Bridal makeup portrait">
+        <img src="1.png" alt="Soft bridal makeup and veil" />
       </figure>
     </div>
   </header>
 
-  <!-- 服务 -->
+  
   <section id="services">
     <div class="container">
       <h2 class="section-title">Services We Offer</h2>
       <p style="text-align:center">The following are all based on <strong>ONE</strong> full-face makeup application.</p>
       <div class="cards">
         <div class="card">
-          <h3>新娘试妆</h3>
-          <p>妆容打板与沟通风格，含自然假睫毛与简单发型建议</p>
-          <p class="price">Bridal Trial Makeup $699 · 60–90 min<br>Bridal Trial Hair $199 · 60 min</p>
+          <h3>Bridal Makeup Trial</h3>
+          <p>Personalized bridal makeup trial with natural false lashes and hairstyle recommendations.</p>
+
         </div>
         <div class="card">
-          <h3>新娘妆造</h3>
-          <p>精致底妆与定妆，含自然假睫毛与一件新娘发饰</p>
-          <p class="price">Bridal Makeup $699 · 60–90 min<br>Bridal Hair $199 · 60 min</p>
+          <h3>Wedding Day Makeup</h3>
+          <p>Long-lasting bridal makeup with natural false lashes and a bridal hair accessory.</p>
+
         </div>
         <div class="card">
-          <h3>活动妆造</h3>
-          <p>拍摄、生日、晚宴、舞会</p>
-          <p class="price"><u>Facial</u> Makeup + Hair $599 · 120 min</p>
+          <h3>Special Event Makeup</h3>
+          <p>Makeup for photo shoots, birthdays, dinners, and proms.</p>
+
         </div>
       </div>
-      <p style="text-align:center; margin-top:10px">Inspiration pictures are more than welcome · 20% booking fee to hold your date and services</p>
+      <p style="text-align:center; margin-top:10px">Inspiration photos are always welcome. Contact me for booking details.</p>
     </div>
   </section>
 
   <!-- About -->
   <section id="about">
     <div class="container about">
-      <img class="avatar" src="图片.png" alt="Yihan 头像" />
+      <img class="avatar" src="图片.png" alt="Portrait of Yihan" />
       <div>
         <h2>About Me</h2>
         <p>
           Hi, I’m Yihan — a bridal makeup artist based in Orlando, Florida. With over 5 years of experience, I specialize in creating timeless, elegant looks that highlight each bride’s natural beauty. My focus is always on flawless, long-lasting makeup that looks stunning both in person and on camera. I take pride in offering a calm, organized, and professional experience from trial to wedding day. Whether you’re going for soft and romantic or classic and polished, I’ll work closely with you to bring your vision to life. Let’s make your special day even more beautiful!
         </p>
-        <p>我是 Yihan，常驻奥兰多的婚礼化妆师。专注于打造「耐看、上镜」的新娘妆与自然发型，讲究底妆贴合与五官比例微调，保证近看质感、远看立体。无论您喜欢温柔浪漫还是经典优雅，我都会用专业与细心将您心中梦幻的新娘造型化为现实。</p>
+        <p></p>
       </div>
     </div>
   </section>
 
-  <!-- 高光经历 -->
+  
   <section id="highlights">
     <div class="container">
       <h2 class="section-title">Professional Highlights</h2>
       <ul class="list">
         <li>Makeup Artist, Cat Fanciers’ Association Annual Show — 2025</li>
         <li>Lead Makeup Artist, “International Cheer Union” at ESPN Wide World of Sports Complex — 2024</li>
-        <li>Makeup Designer，Chinese New Year Production — 2023–2025</li>
+        <li>Makeup Designer, Chinese New Year Production — 2023–2025</li>
         <li>Makeup Director, Greater Orlando Mid-Autumn Festival — 2024</li>
         <li>Provided bespoke makeup looks for 50+ private clients annually across Greater Orlando, specializing in bridal parties and celebratory events</li>
         <li>Garnered over 80,000 social media reviews and mentions under #OrlandoYHMakeup</li>
@@ -267,7 +267,7 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
     </div>
   </section>
 
-  <!-- 预约表单 -->
+  <!-- Booking form -->
   <section id="booking">
     <div class="container">
       <h2 class="section-title">Booking</h2>
@@ -280,7 +280,7 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
         Something went wrong. Please try again or email me directly at yihans.art@gmail.com.
       </div>
 
-      <form id="booking-form" class="form" aria-label="预约表单" novalidate>
+      <form id="booking-form" class="form" aria-label="Booking form" novalidate>
         <div class="form-grid">
           <div>
             <label for="name">Name</label>
@@ -372,14 +372,14 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
     });
   </script>
 
-  <!-- 联系方式 -->
+  
   <section id="lets-get-social">
     <div class="container" style="text-align:center">
       <h2 class="section-title">Contact</h2>
       <p>
         Email: <a href="mailto:yihans.art@gmail.com">yihans.art@gmail.com</a> ·
-        xiaohongshu:
-        <a href="https://www.xiaohongshu.com/user/profile/608c0a390000000001009ef2?tab=liked&subTab=note" target="_blank" rel="noopener">点击这里访问</a>
+        Xiaohongshu:
+        <a href="https://www.xiaohongshu.com/user/profile/608c0a390000000001009ef2?tab=liked&subTab=note" target="_blank" rel="noopener">Visit my profile</a>
       </p>
     </div>
   </section>
