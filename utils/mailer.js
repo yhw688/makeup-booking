@@ -24,9 +24,9 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const SERVICE_LABELS = {
-  'bridal-makeup': 'Bridal Makeup ($699)',
-  'bridal-trial':  'Bridal Trial Run ($699)',
-  'event':         'Special Event Makeup + Hair ($599)',
+  'bridal-makeup': 'Bridal Makeup',
+  'bridal-trial':  'Bridal Trial Run',
+  'event':         'Special Event Makeup + Hair',
 };
 
 /**
@@ -102,7 +102,8 @@ yihans.art@gmail.com
         I'll follow up within <strong>24 hours</strong> to confirm availability and chat about your vision.
         Feel free to reply to this email with any inspiration pictures — they're more than welcome!
       </p>
-      <p class="note">A <strong>20% booking fee</strong> is required to hold your date and services.</p>
+
+
       <p class="note" style="margin-top:24px">Looking forward to making your special day even more beautiful 💕<br/><br/>— Yihan</p>
     </div>
     <div class="footer">yihans.art@gmail.com · OrlandoYHMakeup · Orlando, FL</div>
