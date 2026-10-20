@@ -86,7 +86,7 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
 
     
     .hero{min-height:calc(100vh - var(--nav-h)); display:grid; align-items:center; padding-block:60px}
-    .hero-wrap{display:grid; grid-template-columns:1fr; gap:40px; align-items:center; max-width:760px; text-align:center}
+    .hero-wrap{display:grid; grid-template-columns:1.1fr 1fr; gap:40px; align-items:center}
     .hero h1{font-size:48px; line-height:1.15}
     .hero p{font-size:16px}
     .cta{
@@ -95,7 +95,6 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
       border-radius:999px; box-shadow:var(--shadow); font-weight:600
     }
     .cta:hover{filter:brightness(1.05)}
-    .hero-wrap > div{margin-inline:auto}
     .hero-card{border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); background:var(--card)}
     .hero-card img{aspect-ratio:4/5; object-fit:cover}
     .badge{display:inline-block; font-size:12px; padding:6px 10px; border-radius:999px; background:#efe6e1; color:#7d6557; margin-bottom:10px}
@@ -193,6 +192,9 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
         <p>With over five years of experience, I create natural, elegant bridal and event makeup tailored to your features. Bridal trials and wedding day services are available.</p>
         <a class="cta" href="#booking" aria-label="Book an appointment">Book Now</a>
       </div>
+      <figure class="hero-card" aria-label="Bridal makeup portrait">
+        <img src="1.png" alt="Soft bridal makeup and veil" />
+      </figure>
       
     </div>
   </header>
