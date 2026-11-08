@@ -628,3 +628,122 @@ test("health endpoint probes database and unknown API returns JSON", async () =>
   const r = await request(app).get("/api/unknown").expect(404);
   assert.equal(r.body.success, false);
 });
+
+test("simultaneous confirmations from independent server threads use SQLite locking", async () => {
+  const { Worker } = require("node:worker_threads");
+  const ids = await Promise.all([book(), book()]);
+  const source = `const {parentPort,workerData}=require('node:worker_threads');const {openDatabase}=require(workerData.databaseModule);const {createApp}=require(workerData.appModule);const db=openDatabase(workerData.file);const server=createApp({db,config:workerData.config,now:()=>workerData.clock,send:async()=>{}}).listen(0,'127.0.0.1',()=>parentPort.postMessage(server.address().port));`;
+  const workers = [];
+  try {
+    const clients = await Promise.all(
+      [0, 1].map(async () => {
+        const worker = new Worker(source, {
+          eval: true,
+          workerData: {
+            file: path.join(tmp, "test.db"),
+            databaseModule: require.resolve("../db/database"),
+            appModule: require.resolve("../lib/app"),
+            config,
+            clock,
+          },
+        });
+        workers.push(worker);
+        const port = await new Promise((resolve, reject) => {
+          worker.once("message", resolve);
+          worker.once("error", reject);
+        });
+        const client = request.agent(`http://127.0.0.1:${port}`);
+        const s = await client.get("/api/auth/session");
+        const result = await client
+          .post("/api/auth/login")
+          .set("X-CSRF-Token", s.body.csrfToken)
+          .send({ username: "artist", password: "a-test-password-123" })
+          .expect(200);
+        return { client, csrf: result.body.csrfToken };
+      }),
+    );
+    const results = await Promise.all(
+      clients.map(({ client, csrf }, i) =>
+        client
+          .patch(`/api/appointments/${ids[i]}/status`)
+          .set("X-CSRF-Token", csrf)
+          .send({ status: "confirmed" }),
+      ),
+    );
+    assert.deepEqual(results.map((r) => r.status).sort(), [200, 409]);
+    assert.equal(
+      db
+        .prepare("SELECT count(*) n FROM appointments WHERE status='confirmed'")
+        .get().n,
+      1,
+    );
+  } finally {
+    await Promise.all(workers.map((worker) => worker.terminate()));
+  }
+});
+test("database restart preserves outbox and processing resumes", async () => {
+  await book();
+  db.close();
+  db = openDatabase(path.join(tmp, "test.db"));
+  await processJobs(
+    db,
+    async (...a) => sent.push(a),
+    () => clock,
+  );
+  assert.equal(sent.length, 2);
+  await processJobs(
+    db,
+    async (...a) => sent.push(a),
+    () => clock,
+  );
+  assert.equal(sent.length, 2);
+});
+test("cancellation stops a queued reminder even after its original due time", async () => {
+  const id = await book();
+  await login();
+  await status(id).expect(200);
+  await status(id, "cancelled").expect(200);
+  clock = Date.parse(input().starts_at) - 3600000;
+  await processJobs(
+    db,
+    async (...a) => sent.push(a),
+    () => clock,
+  );
+  assert.equal(sent.filter((a) => a[0] === "reminder").length, 0);
+  assert.equal(sent.filter((a) => a[0] === "cancelled").length, 1);
+});
+test("SQLite online backup can be restored with integrity and original records", async () => {
+  await book();
+  const backup = path.join(tmp, "snapshot.db");
+  await db.backup(backup);
+  const restored = openDatabase(backup);
+  try {
+    assert.equal(restored.pragma("integrity_check", { simple: true }), "ok");
+    assert.equal(
+      restored.prepare("SELECT count(*) n FROM appointments").get().n,
+      1,
+    );
+    assert.equal(
+      restored.prepare("SELECT count(*) n FROM email_jobs").get().n,
+      2,
+    );
+  } finally {
+    restored.close();
+  }
+});
+test("short-notice confirmation queues an immediate reminder", async () => {
+  const id = await book();
+  clock = Date.parse(input().starts_at) - 3600000;
+  await login();
+  await status(id).expect(200);
+  const job = db
+    .prepare("SELECT * FROM email_jobs WHERE kind='reminder'")
+    .get();
+  assert.equal(job.due_at, clock);
+  await processJobs(
+    db,
+    async (...a) => sent.push(a),
+    () => clock,
+  );
+  assert.equal(sent.filter((a) => a[0] === "reminder").length, 1);
+});
