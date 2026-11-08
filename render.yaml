@@ -1,0 +1,54 @@
+# Reference configuration. Do not apply to an existing service before backing up its database.
+services:
+  - type: web
+    name: makeup-booking-upgrade-review
+    runtime: node
+    plan: starter
+    autoDeployTrigger: off
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    maxShutdownDelaySeconds: 60
+    disk:
+      name: booking-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 24
+      - key: DB_PATH
+        value: /var/data/bookings.db
+      - key: TRUST_PROXY
+        value: 1
+      - key: APP_ORIGIN
+        sync: false
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD_HASH
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: WORKER_SECRET
+        sync: false
+      - key: SENDGRID_API_KEY
+        sync: false
+      - key: FROM_EMAIL
+        sync: false
+      - key: ARTIST_EMAIL
+        sync: false
+  - type: cron
+    name: makeup-booking-reminder-trigger-review
+    runtime: node
+    schedule: "* * * * *"
+    autoDeployTrigger: off
+    buildCommand: npm ci --omit=dev
+    startCommand: node scripts/trigger-jobs.js
+    envVars:
+      - key: NODE_VERSION
+        value: 24
+      - key: APP_ORIGIN
+        sync: false
+      - key: WORKER_SECRET
+        sync: false

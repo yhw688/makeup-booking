@@ -5,18 +5,33 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "node --watch server.js",
+    "test": "node --test test/*.test.js",
+    "worker": "node worker.js",
+    "worker:once": "node worker.js --once",
+    "test:e2e": "playwright test",
+    "format:check": "prettier --check lib db/database.js utils server.js worker.js scripts public/admin.* public/booking.js test playwright.config.js",
+    "security:check": "node scripts/security-check.js"
   },
   "dependencies": {
-    "@sendgrid/mail": "^8.1.0",
+    "bcrypt": "^6.0.0",
     "better-sqlite3": "^12.11.1",
-    "cors": "^2.8.5",
     "dotenv": "^16.4.1",
     "express": "^4.18.2",
-    "express-validator": "^7.0.1",
-    "sqlite3": "^6.0.1"
+    "express-rate-limit": "^8.7.3",
+    "express-session": "^1.19.0",
+    "helmet": "^8.3.0",
+    "luxon": "^3.7.2"
   },
   "devDependencies": {
-    "nodemon": "^3.0.3"
+    "@playwright/test": "^1.65.0",
+    "prettier": "^3.9.10",
+    "supertest": "^7.3.2"
+  },
+  "engines": {
+    "node": ">=22 <25"
+  },
+  "overrides": {
+    "qs": "^6.17.1"
   }
 }

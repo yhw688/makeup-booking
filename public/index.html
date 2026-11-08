@@ -270,21 +270,21 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
 
       <!-- Success / Error banners (hidden by default) -->
       <div id="booking-success" style="display:none; max-width:720px; margin:0 auto 16px; background:#d4edda; color:#155724; padding:14px 20px; border-radius:12px; font-size:14px;">
-        ✨ Your booking request has been received! Check your email for confirmation — I'll follow up within 24 hours.
+        ✨ Your booking request has been received! Your request is pending review and an email is queued — I'll follow up within 24 hours.
       </div>
       <div id="booking-error" style="display:none; max-width:720px; margin:0 auto 16px; background:#f8d7da; color:#721c24; padding:14px 20px; border-radius:12px; font-size:14px;">
         Something went wrong. Please try again or email me directly at yihans.art@gmail.com.
       </div>
 
-      <form id="booking-form" class="form" aria-label="Booking form" novalidate>
+      <form id="booking-form" class="form" aria-label="Booking form">
         <div class="form-grid">
           <div>
             <label for="name">Name</label>
-            <input id="name" name="name" type="text" placeholder="Your name" required />
+            <input id="name" name="name" type="text" maxlength="100" placeholder="Your name" required />
           </div>
           <div>
             <label for="email">Email</label>
-            <input id="email" name="email" type="email" placeholder="name@email.com" required />
+            <input id="email" name="email" type="email" maxlength="254" placeholder="name@email.com" required />
           </div>
           <div>
             <label for="date">Date</label>
@@ -299,8 +299,13 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
             </select>
           </div>
           <div class="full">
+            <label for="starts_at">Available time (America/New_York)</label>
+            <select id="starts_at" name="starts_at" required disabled><option value="">Choose a date first</option></select>
+            <p id="slot-status" role="status" aria-live="polite"></p>
+          </div>
+          <div class="full">
             <label for="message">Share all the details here :)</label>
-            <textarea id="message" name="message" placeholder="Tell me more..."></textarea>
+            <textarea id="message" name="message" maxlength="2000" placeholder="Tell me more..."></textarea>
           </div>
         </div>
         <div style="margin-top:14px; display:flex; gap:10px; align-items:center; justify-content:flex-end">
@@ -310,63 +315,7 @@ uses fetch() to send them to the backend REST API — no page reload, instant fe
     </div>
   </section>
 
-  <script>
-    // ── Set minimum date to today ──────────────────────────────────────────────
-    const dateInput = document.getElementById('date');
-    const today = new Date().toISOString().split('T')[0];
-    dateInput.setAttribute('min', today);
-
-    // ── Booking form → REST API ────────────────────────────────────────────────
-    document.getElementById('booking-form').addEventListener('submit', async (e) => {
-      e.preventDefault(); //stop page reload
-
-      const form      = e.target;
-      const btn       = document.getElementById('submit-btn');
-      const successEl = document.getElementById('booking-success');
-      const errorEl   = document.getElementById('booking-error');
-
-      // Hide previous banners
-      successEl.style.display = 'none';
-      errorEl.style.display   = 'none';
-
-      // Disable button while submitting
-      btn.disabled    = true;
-      btn.textContent = 'Sending…';
-
-      const payload = {
-        name:    form.name.value.trim(),
-        email:   form.email.value.trim(),
-        date:    form.date.value,
-        service: form.service.value,
-        message: form.message.value.trim(),
-      };
-
-      try { //fetch() sends data to /api/appointments
-        const res  = await fetch('/api/appointments', {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(payload),
-        });
-        const data = await res.json();
-
-        if (res.ok && data.success) {
-          successEl.style.display = 'block';
-          form.reset();
-          successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        } else {
-          const msg = data.errors ? data.errors.map(e => e.msg).join(' · ') : data.message;
-          errorEl.textContent = msg || 'Something went wrong.';
-          errorEl.style.display = 'block';
-        }
-      } catch (err) {
-        console.error(err);
-        errorEl.style.display = 'block';
-      } finally {
-        btn.disabled    = false;
-        btn.textContent = 'SEND W/ LOVE';
-      }
-    });
-  </script>
+  <script src="/booking.js" defer></script>
 
   
   <section id="lets-get-social">

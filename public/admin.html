@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Yihan Makeup · Admin</title>
+    <link rel="stylesheet" href="/admin.css" />
+    <script src="/admin.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <a href="/">Yihan Makeup</a><span>Appointment studio</span
+      ><button id="logout" hidden>Log out</button>
+    </header>
+    <main>
+      <p id="notice" role="status" aria-live="polite"></p>
+      <section id="login-panel">
+        <h1>Welcome back, Yihan</h1>
+        <p>Sign in to manage your appointments.</p>
+        <form id="login">
+          <label
+            >Username<input
+              name="username"
+              autocomplete="username"
+              required /></label
+          ><label
+            >Password<input
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required /></label
+          ><button>Sign in</button>
+        </form>
+      </section>
+      <div id="dashboard" hidden>
+        <section>
+          <h1>Appointments</h1>
+          <div class="toolbar">
+            <label
+              >Status<select id="filter">
+                <option value="">All</option>
+                <option>pending</option>
+                <option>confirmed</option>
+                <option>cancelled</option>
+              </select></label
+            ><label><input type="checkbox" id="upcoming" /> Upcoming only</label
+            ><button id="refresh">Refresh</button>
+          </div>
+          <div id="appointments" class="grid"></div>
+        </section>
+        <section id="details" hidden>
+          <h2>Appointment details</h2>
+          <div id="detail-content"></div>
+          <div class="toolbar">
+            <label id="legacy-label" hidden
+              >Assign a time to this date-only request<select
+                id="legacy-slot"
+              ></select></label
+            ><button id="confirm">Confirm</button
+            ><button id="cancel">Cancel appointment</button
+            ><button id="close-detail">Close details</button>
+          </div>
+        </section>
+        <section>
+          <h2>Availability</h2>
+          <p>
+            Times use America/New_York. Existing confirmed bookings keep their
+            time and buffer when settings change.
+          </p>
+          <form id="settings" class="toolbar">
+            <label
+              >Duration (minutes)<input
+                name="duration_minutes"
+                type="number"
+                min="15"
+                max="480"
+                required /></label
+            ><label
+              >Buffer (minutes)<input
+                name="buffer_minutes"
+                type="number"
+                min="0"
+                max="120"
+                required /></label
+            ><button>Save duration</button>
+          </form>
+          <form id="availability" class="toolbar">
+            <label>Date<input name="date" type="date" required /></label
+            ><label
+              >From<input
+                name="start_time"
+                type="time"
+                value="09:00"
+                required /></label
+            ><label
+              >Until<input
+                name="end_time"
+                type="time"
+                value="17:00"
+                required /></label
+            ><label><input name="blocked" type="checkbox" /> Block date</label
+            ><button>Save date</button>
+          </form>
+          <div id="windows"></div>
+        </section>
+        <section>
+          <h2>Email delivery</h2>
+          <p id="worker-status"></p>
+          <p>
+            Failed deliveries need operator attention. Sending means SendGrid
+            accepted the message; inbox delivery is not guaranteed.
+          </p>
+          <div id="jobs"></div>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>
